@@ -14,13 +14,14 @@ class LinterStylint extends Linter
   linterName: 'stylint'
 
   # A regex pattern used to extract information from the executable's output.
+  # ((?P<warning>Warning)|(?P<fail>Error)):\s*(?P<message>.+)\s*.*\s*Line:\s*(?P<line>\d+):\s*(?P<near>.*\S)
   regex:
-    '/^((?P<warning>Warning)|(?P<error>Error)):\s*(?P<message>.+)\s*'+
-    '^.*\s*' +
-    'Line:\s*(?P<line>\d+):\s*(?P<near>.*\S)/im'
+    '((?P<warning>Warning)|(?P<error>Error)):\\s*(?P<message>.+)\\s*'+
+    'File:\\s(?P<file>.+)\\s*' +
+    'Line:\\s(?P<line>\\d+):\\s*(?P<near>.+\\S)'
+  regexFlags: 'im'
 
   isNodeExecutable: yes
-  multiline: yes
 
   constructor: (editor) ->
     super(editor)
@@ -44,7 +45,7 @@ class LinterStylint extends Linter
       warn "Regex does not match lint output", match
       ""
 
-    "#{match.message} (#{type}#{match.line}#{match.near})"
+    "#{match.message} (#{type}: #{match.line} #{match.near})"
 
   destroy: ->
     atom.config.unobserve 'linter-stylint.stylintExecutablePath'
