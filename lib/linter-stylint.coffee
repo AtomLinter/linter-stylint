@@ -26,15 +26,22 @@ class LinterStylint extends Linter
   constructor: (editor) ->
     super(editor)
 
+    item = atom.workspace.getActivePaneItem()
+    file = editor?.buffer.file
+    filePath = file?.path
+
+    if filePath
+      @cmd = @cmd.concat [filePath]
+
     config = findFile @cwd, ['.stylintrc']
     if config
       @cmd = @cmd.concat ['--config', config]
 
-    atom.config.observe 'linter-stylint.stylintExecutablePath', @formatShellCmd
+    atom.config.observe 'linter-stylint.executablePath', @formatShellCmd
 
   formatShellCmd: =>
-    stylintExecutablePath = atom.config.get 'linter-stylint.stylintExecutablePath'
-    @executablePath = "#{stylintExecutablePath}"
+    executablePath = atom.config.get 'linter-stylint.executablePath'
+    @executablePath = "#{executablePath}"
 
   formatMessage: (match) ->
     type = if match.error
@@ -48,6 +55,6 @@ class LinterStylint extends Linter
     "#{match.message} (#{type}: #{match.line} #{match.near})"
 
   destroy: ->
-    atom.config.unobserve 'linter-stylint.stylintExecutablePath'
+    atom.config.unobserve 'linter-stylint.executablePath'
 
 module.exports = LinterStylint
