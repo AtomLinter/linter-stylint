@@ -7,7 +7,7 @@
   "description": "Linter plugin for Stylus, using `stylint`.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matthojo/linter-stylint.git"
+    "url": "https://github.com/AtomLinter/linter-stylint.git"
   },
   "license": "MIT",
   "engines": {
@@ -18,7 +18,7 @@
   },
   "readmeFilename": "README.md",
   "bugs": {
-    "url": "https://github.com/matthojo/linter-stylint/issues"
+    "url": "https://github.com/AtomLinter/linter-stylint/issues"
   },
-  "homepage": "https://github.com/matthojo/linter-stylint"
+  "homepage": "https://github.com/AtomLinter/linter-stylint"
 }
