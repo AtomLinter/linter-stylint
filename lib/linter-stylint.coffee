@@ -36,8 +36,7 @@ class LinterStylint extends Linter
       @cmd = @cmd.concat [filePath]
 
     config = findFile @cwd, ['.stylintrc']
-    if config
-      @cmd = @cmd.concat ['--config', config]
+    @cmd = @cmd.concat ['-c', config] if config
 
     atom.config.observe 'linter-stylint.stylintExecutablePath', =>
       executablePath = atom.config.get 'linter-stylint.stylintExecutablePath'
