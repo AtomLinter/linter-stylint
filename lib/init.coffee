@@ -1,8 +1,10 @@
 path = require 'path'
 
 module.exports =
-  configDefaults:
-    executablePath: path.join __dirname, '..', 'node_modules', 'stylint', 'bin'
+  config:
+    stylintExecutablePath:
+      type: 'string'
+      default: '/usr/local/bin/stylint'
 
   activate: ->
     console.log 'activate linter-stylint'

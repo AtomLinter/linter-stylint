@@ -11,6 +11,8 @@ class LinterStylint extends Linter
   # containing the command line (with arguments) used to lint.
   cmd: ['stylint']
 
+  executablePath: null
+
   linterName: 'stylint'
 
   # A regex pattern used to extract information from the executable's output.
@@ -37,11 +39,11 @@ class LinterStylint extends Linter
     if config
       @cmd = @cmd.concat ['--config', config]
 
-    atom.config.observe 'linter-stylint.executablePath', @formatShellCmd
+    atom.config.observe 'linter-stylint.stylintExecutablePath', =>
+      executablePath = atom.config.get 'linter-stylint.stylintExecutablePath'
 
-  formatShellCmd: =>
-    executablePath = atom.config.get 'linter-stylint.executablePath'
-    @executablePath = "#{executablePath}"
+      if executablePath
+        @executablePath = if executablePath.length > 0 then executablePath else null
 
   formatMessage: (match) ->
     type = if match.error
@@ -55,6 +57,6 @@ class LinterStylint extends Linter
     "#{match.message} (#{type}: #{match.line} #{match.near})"
 
   destroy: ->
-    atom.config.unobserve 'linter-stylint.executablePath'
+    atom.config.unobserve 'linter-stylint.stylintExecutablePath'
 
 module.exports = LinterStylint
