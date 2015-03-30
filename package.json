@@ -3,7 +3,7 @@
   "main": "./lib/init",
   "linter-package": true,
   "activationEvents": [],
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Linter plugin for Stylus, using `stylint`.",
   "repository": {
     "type": "git",
