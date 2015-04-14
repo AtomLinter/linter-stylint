@@ -1,3 +1,5 @@
+{CompositeDisposable} = require 'atom'
+
 linterPath = atom.packages.getLoadedPackage("linter").path
 Linter = require "#{linterPath}/lib/linter"
 {findFile, warn} = require "#{linterPath}/lib/utils"
@@ -28,6 +30,8 @@ class LinterStylint extends Linter
   constructor: (editor) ->
     super(editor)
 
+    @disposables = new CompositeDisposable
+
     item = atom.workspace.getActivePaneItem()
     file = editor?.buffer.file
     filePath = file?.path
@@ -38,7 +42,7 @@ class LinterStylint extends Linter
     config = findFile @cwd, ['.stylintrc']
     @cmd = @cmd.concat ['-c', config] if config
 
-    atom.config.observe 'linter-stylint.stylintExecutablePath', =>
+    @disposables.add atom.config.observe 'linter-stylint.stylintExecutablePath', =>
       executablePath = atom.config.get 'linter-stylint.stylintExecutablePath'
 
       if executablePath
@@ -56,6 +60,6 @@ class LinterStylint extends Linter
     "#{match.message} (#{type}: #{match.line} #{match.near})"
 
   destroy: ->
-    atom.config.unobserve 'linter-stylint.stylintExecutablePath'
+    @disposables.dispose()
 
 module.exports = LinterStylint
