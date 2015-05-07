@@ -2,7 +2,7 @@
   "name": "linter-stylint",
   "main": "./lib/init",
   "linter-package": true,
-  "activationEvents": [],
+  "activationCommands": [],
   "version": "0.5.0",
   "description": "Linter plugin for Stylus, using `stylint`.",
   "repository": {
