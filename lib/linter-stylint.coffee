@@ -1,13 +1,12 @@
-{CompositeDisposable} = require 'atom'
-
 linterPath = atom.packages.getLoadedPackage("linter").path
 Linter = require "#{linterPath}/lib/linter"
 {findFile, warn} = require "#{linterPath}/lib/utils"
+{CompositeDisposable} = require 'atom'
 
 class LinterStylint extends Linter
   # The syntax that the linter handles. May be a string or
   # list/tuple of strings. Names should be all lowercase.
-  @syntax: ['source.stylus']
+  @syntax: ['source.styl', 'source.stylus']
 
   # A string, list, tuple or callable that returns a string, list or tuple,
   # containing the command line (with arguments) used to lint.
@@ -48,6 +47,16 @@ class LinterStylint extends Linter
       if executablePath
         @executablePath = if executablePath.length > 0 then executablePath else null
 
+    @disposables.add atom.config.observe 'linter-stylint.runWithStrictMode', =>
+      strictMode = atom.config.get 'linter-stylint.runWithStrictMode'
+
+      if strictMode
+        @cmd = @cmd.concat ['-s']
+      else
+        index = @cmd.indexOf('-s')
+        if index > -1
+          @cmd.splice(index, 1)
+
   formatMessage: (match) ->
     type = if match.error
       "Error"
@@ -60,6 +69,7 @@ class LinterStylint extends Linter
     "#{match.message} (#{type}: #{match.line} #{match.near})"
 
   destroy: ->
+    super
     @disposables.dispose()
 
 module.exports = LinterStylint
