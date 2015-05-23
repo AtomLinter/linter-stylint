@@ -66,7 +66,7 @@ class LinterStylint extends Linter
       warn "Regex does not match lint output", match
       ""
 
-    "#{match.message} (#{type}: #{match.line} #{match.near})"
+    "#{match.message} (#{type}: #{match.near})"
 
   destroy: ->
     super
