@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/AtomLinter/linter-stylint/issues"
   },
-  "homepage": "https://github.com/AtomLinter/linter-stylint"
+  "homepage": "https://github.com/AtomLinter/linter-stylint",
+  "dependencies": {
+    "stylint": "^0.9.9"
+  }
 }
