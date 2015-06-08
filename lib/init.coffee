@@ -5,7 +5,7 @@ module.exports =
     stylintExecutablePath:
       type: 'string'
       title: 'Stylint Executable Path'
-      default: '/usr/local/bin/stylint'
+      default: path.join __dirname, '..', 'node_modules', 'stylint', 'bin'
 
     runWithStrictMode:
       default: false
