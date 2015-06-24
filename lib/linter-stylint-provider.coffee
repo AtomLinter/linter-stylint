@@ -23,18 +23,20 @@ LinterStylint =
         'im'
       )
       configFile = findFile path.dirname(filePath), ['.stylintrc']
-      if @config 'onlyRunWhenConfig' && !@config 'runWithStrictMode' && !configFile
-        console.log 'No stylint config found'
-        resolve []
+      if @config 'onlyRunWhenConfig'
+        if configFile == undefined
+          console.log 'No stylint config found'
+          return resolve []
 
       params = [filePath]
-      params = params.concat ['-c', configFile] if configFile
+
       if @config 'runWithStrictMode'
         params = params.concat ['-s']
       else
         index = params.indexOf('-s')
         if index > -1
           params.splice(index, 1)
+        params = params.concat ['-c', configFile] if configFile
 
       command = @config 'executablePath'
       args = params
@@ -44,7 +46,6 @@ LinterStylint =
       stderr = (err) ->
         console.log err
       exit = (code) ->
-        console.log code
         return resolve [] unless code is 1
         console.log results
         XRegExp.forEach results, regex, (match) =>
@@ -54,7 +55,7 @@ LinterStylint =
           else if match.warning
             "Warning"
           messages.push {
-            type: type
+            type: type or 'Warning'
             text: match.message
             filePath: match.file or textEditor.getPath()
             range: [
