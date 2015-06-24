@@ -1,9 +1,7 @@
 {
   "name": "linter-stylint",
   "main": "./lib/init",
-  "linter-package": true,
-  "activationCommands": [],
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "Linter plugin for Stylus, using `stylint`.",
   "repository": {
     "type": "git",
@@ -17,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/AtomLinter/linter-stylint/issues"
   },
-  "homepage": "https://github.com/AtomLinter/linter-stylint"
+  "homepage": "https://github.com/AtomLinter/linter-stylint",
+  "providedServices": {
+    "linter": {
+      "versions": {
+        "1.0.0": "provideLinter"
+      }
+    }
+  },
+  "dependencies": {
+    "xregexp": "~2.0.0"
+  }
 }
