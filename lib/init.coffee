@@ -22,10 +22,7 @@ module.exports =
   activate: ->
     console.log 'activate linter-stylint'
 
-    if not atom.packages.getLoadedPackage 'linter'
-      atom.notifications.addError """
-        [linter-stylint] `linter` package not found. Please install https://github.com/AtomLinter/Linter.
-      """
+    require('atom-package-deps').install 'linter-stylint'
 
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.config.observe 'linter-stylint.executablePath',
