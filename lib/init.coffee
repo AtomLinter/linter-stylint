@@ -1,43 +1,82 @@
-path = require 'path'
-{CompositeDisposable} = require 'atom'
-LinterStylintProvider = require './linter-stylint-provider'
+helpers = require('atom-linter')
+XRegExp = require('xregexp').XRegExp
 
 module.exports =
-  config:
-    executablePath:
-      type: 'string'
-      title: 'Stylint Executable Path'
-      default: '/usr/local/bin/stylint'
+    config:
+        executablePath:
+            type: 'string'
+            default: path.join __dirname, '..', 'node_modules', 'stylint', 'bin', 'stylint'
+            description: 'Full path to binary (e.g. /usr/local/bin/stylint)'
 
-    runWithStrictMode:
-      default: false
-      title: 'Always run Stylint in \'strict mode\' (no config is needed)'
-      type: 'boolean'
+        projectConfigFile:
+            type: 'string'
+            default: '.stylintrc'
+            description: 'Relative path from project to config file'
 
-    onlyRunWhenConfig:
-      default: false
-      title: 'Only run Stylint if `.stylintrc` is found'
-      type: 'boolean'
+        runWithStrictMode:
+            default: false
+            title: 'Always run Stylint in \'strict mode\' (config no needed)'
+            type: 'boolean'
 
-  activate: ->
-    console.log 'activate linter-stylint'
+        onlyRunWhenConfig:
+            default: false
+            title: 'Run Stylint only if config is found'
+            type: 'boolean'
 
-    require('atom-package-deps').install 'linter-stylint'
+    activate: ->
+        require('atom-package-deps').install 'linter-stylint'
 
-    @subscriptions = new CompositeDisposable
-    @subscriptions.add atom.config.observe 'linter-stylint.executablePath',
-    (executablePath) =>
-      @executablePath = executablePath
+    provideLinter: ->
+        provider =
+            grammarScopes: ['source.stylus', 'source.styl']
+            scope: 'file'
+            lintOnFly: true
 
-    @subscriptions.add atom.config.observe 'linter-stylint.runWithStrictMode',
-    (runWithStrictMode) =>
-      @runWithStrictMode = runWithStrictMode
+            config: (key) ->
+                atom.config.get "linter-stylint.#{key}"
 
-    @subscriptions.add atom.config.observe 'linter-stylint.onlyRunWhenConfig',
-    (onlyRunWhenConfig) =>
-      @onlyRunWhenConfig = onlyRunWhenConfig
+            lint: (textEditor) ->
+                filePath = textEditor.getPath()
+                fileText = textEditor.getText()
 
-  deactivate: ->
-    @subscriptions.dispose()
+                onlyRunWhenConfig = @config 'onlyRunWhenConfig'
+                runWithStrictMode = @config 'runWithStrictMode'
+                executablePath = @config 'executablePath'
+                projectConfigFile = @config 'projectConfigFile'
 
-  provideLinter: -> LinterStylintProvider
+                projectConfigPath = helpers.findFile(atom.project.getPaths()[0], projectConfigFile)
+
+                parameters = []
+                parameters.push(filePath)
+
+                if(onlyRunWhenConfig && !projectConfigPath)
+                    console.log 'Stylint config no found'
+                    return
+
+                if(onlyRunWhenConfig || !runWithStrictMode && projectConfigPath)
+                    parameters.push('-c', projectConfigPath)
+
+                return helpers.execNode(executablePath, parameters, stdin: fileText).then (result) ->
+                    toReturn = []
+                    regex = XRegExp(
+                        '((?P<warning>Warning)|(?P<error>Error)):\\s*(?P<message>.+)\\s*' +
+                        'File:\\s(?P<file>.+)\\s*' +
+                        'Line:\\s(?P<line>\\d+):\\s*(?P<near>.+\\S)',
+                        'im'
+                    )
+                    XRegExp.forEach result, regex, (match) ->
+                        type = if match.error
+                            'Error'
+                        else
+                            'Warning'
+
+                        toReturn.push {
+                            type: type
+                            text: match.message
+                            filePath: match.file
+                            range: [
+                                [match.line - 1, -1],
+                                [match.line - 1, -1]
+                            ]
+                        }
+                    return toReturn

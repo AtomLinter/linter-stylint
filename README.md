@@ -8,13 +8,6 @@ This linter plugin for [Linter](https://github.com/AtomLinter/Linter) provides a
 $ apm install linter-stylint
 ```
 
-## Settings
-You can configure linter-stylint by editing ~/.atom/config.cson (choose Open Your Config in Atom menu):
-```
-'linter-stylint':
-  'stylintExecutablePath': null #stylint path. run 'which stylint' to find the path
-```
-
 ## Contributing
 If you would like to contribute enhancements or fixes, please do the following:
 
