@@ -1,5 +1,4 @@
 helpers = require('atom-linter')
-XRegExp = require('atom-linter/node_modules/xregexp').XRegExp
 path = require('path')
 
 module.exports =
@@ -52,32 +51,17 @@ module.exports =
 
         if(onlyRunWhenConfig && !projectConfigPath)
           console.error 'Stylint config no found'
-          return
+          return []
 
         if(onlyRunWhenConfig || !runWithStrictMode && projectConfigPath)
           parameters.push('-c', projectConfigPath)
 
         return helpers.execNode(executablePath, parameters, stdin: fileText).then (result) ->
-          toReturn = []
-          regex = XRegExp(
-            '((?P<warning>Warning)|(?P<error>Error)):\\s*(?P<message>.+)\\s*' +
-            'File:\\s(?P<file>.+)\\s*' +
-            'Line:\\s(?P<line>\\d+):\\s*(?P<near>.+\\S)',
-            'im'
-          )
-          XRegExp.forEach result, regex, (match) ->
-            type = if match.error
-              'Error'
-            else
-              'Warning'
 
-            toReturn.push {
-              type: type
-              text: match.message
-              filePath: match.file
-              range: [
-                [match.line - 1, -1],
-                [match.line - 1, -1]
-              ]
-            }
-          return toReturn
+          reg = /(Warning|Error):\s(.*)\nFile:\s(.*)\nLine:\s(\d*)/g
+          pattern = 'Type: $1 Message: $2 File: $3 Line: $4'
+          result = result.replace(reg, pattern)
+
+          regex = 'Type: (?<type>(Warning|Error)) Message: (?<message>.*) File: (?<file>.*) Line: (?<line>\\d+):'
+
+          return helpers.parse(result, regex)
