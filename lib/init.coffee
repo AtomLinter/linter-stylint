@@ -1,5 +1,6 @@
 helpers = require('atom-linter')
 XRegExp = require('xregexp').XRegExp
+path = require('path')
 
 module.exports =
   config:
