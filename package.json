@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "engines": {
-    "atom": "^1.0.0"
+    "atom": ">=1.0.0 <2.0.0"
   },
   "readmeFilename": "README.md",
   "bugs": {
@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "stylint": "^1.0.0",
-    "atom-linter": "^3.0.0",
-    "atom-package-deps": "^2.0.0"
+    "atom-linter": "^4.0.0",
+    "atom-package-deps": "^3.0.0"
   },
   "package-deps": [
     "linter"

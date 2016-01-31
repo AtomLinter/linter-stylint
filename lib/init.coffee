@@ -6,7 +6,7 @@ module.exports =
     executablePath:
       type: 'string'
       default: path.join __dirname, '..', 'node_modules', 'stylint', 'bin', 'stylint'
-      description: 'Full path to binary (e.g. /usr/local/bin/stylint)'
+      description: 'Full path to the `stylint` executable (e.g. /usr/local/bin/stylint)'
 
     projectConfigFile:
       type: 'string'
@@ -46,8 +46,7 @@ module.exports =
 
         projectConfigPath = helpers.findFile(atom.project.getPaths()[0], projectConfigFile)
 
-        parameters = []
-        parameters.push(filePath)
+        parameters = [filePath]
 
         if(onlyRunWhenConfig && !projectConfigPath)
           console.error 'Stylint config no found'
