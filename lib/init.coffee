@@ -65,10 +65,14 @@ module.exports =
           parameters.push('-c', projectConfigPath)
 
         return helpers.execNode(@executablePath, parameters, stdin: fileText).then (result) ->
-          reg = /(Warning|Error):\s(.*)\nFile:\s(.*)\nLine:\s(\d*)/g
-          pattern = 'Type: $1 Message: $2 File: $3 Line: $4'
-          result = result.replace(reg, pattern)
+          regex = /(Warning|Error):\s(.*)\nFile:\s(.*)\nLine:\s(\d*)/g
+          messages = []
 
-          regex = 'Type: (?<type>(Warning|Error)) Message: (?<message>.*) File: (?<file>.*) Line: (?<line>\\d+):'
+          while (match = regex.exec(result)) != null
+            messages.push
+              type: match[1]
+              text: match[2]
+              filePath: match[3]
+              range: helpers.rangeFromLineNumber(textEditor, match[4] - 1)
 
-          return helpers.parse(result, regex)
+          return messages
