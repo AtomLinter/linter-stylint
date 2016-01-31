@@ -1,5 +1,6 @@
 helpers = require('atom-linter')
 path = require('path')
+{CompositeDisposable} = require('atom')
 
 module.exports =
   config:
@@ -24,7 +25,20 @@ module.exports =
       type: 'boolean'
 
   activate: ->
-    require('atom-package-deps').install 'linter-stylint'
+    require('atom-package-deps').install()
+    @subscriptions = new CompositeDisposable
+    @subscriptions.add atom.config.observe 'linter-stylint.executablePath',
+      (executablePath) =>
+        @executablePath = executablePath
+    @subscriptions.add atom.config.observe 'linter-stylint.projectConfigFile',
+      (projectConfigFile) =>
+        @projectConfigFile = projectConfigFile
+    @subscriptions.add atom.config.observe 'linter-stylint.runWithStrictMode',
+      (runWithStrictMode) =>
+        @runWithStrictMode = runWithStrictMode
+    @subscriptions.add atom.config.observe 'linter-stylint.onlyRunWhenConfig',
+      (onlyRunWhenConfig) =>
+        @onlyRunWhenConfig = onlyRunWhenConfig
 
   provideLinter: ->
     provider =
@@ -32,31 +46,25 @@ module.exports =
       scope: 'file'
       lintOnFly: true
 
-      config: (key) ->
-        atom.config.get "linter-stylint.#{key}"
-
-      lint: (textEditor) ->
+      lint: (textEditor) =>
         filePath = textEditor.getPath()
         fileText = textEditor.getText()
 
-        onlyRunWhenConfig = @config 'onlyRunWhenConfig'
-        runWithStrictMode = @config 'runWithStrictMode'
-        executablePath = @config 'executablePath'
-        projectConfigFile = @config 'projectConfigFile'
+        if !fileText
+          return []
 
-        projectConfigPath = helpers.findFile(atom.project.getPaths()[0], projectConfigFile)
+        projectConfigPath = helpers.find(filePath, @projectConfigFile)
 
         parameters = [filePath]
 
-        if(onlyRunWhenConfig && !projectConfigPath)
-          console.error 'Stylint config no found'
+        if(@onlyRunWhenConfig && !projectConfigPath)
+          atom.notifications.addError 'Stylint config no found'
           return []
 
-        if(onlyRunWhenConfig || !runWithStrictMode && projectConfigPath)
+        if(@onlyRunWhenConfig || !@runWithStrictMode && projectConfigPath)
           parameters.push('-c', projectConfigPath)
 
-        return helpers.execNode(executablePath, parameters, stdin: fileText).then (result) ->
-
+        return helpers.execNode(@executablePath, parameters, stdin: fileText).then (result) ->
           reg = /(Warning|Error):\s(.*)\nFile:\s(.*)\nLine:\s(\d*)/g
           pattern = 'Type: $1 Message: $2 File: $3 Line: $4'
           result = result.replace(reg, pattern)
