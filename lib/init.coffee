@@ -6,7 +6,7 @@ module.exports =
     executablePath:
       type: 'string'
       default: path.join __dirname, '..', 'node_modules', 'stylint', 'bin', 'stylint'
-      description: 'Full path to the `stylint` executable (e.g. /usr/local/bin/stylint)'
+      description: 'Full path to the `stylint` executable node script file (e.g. /usr/local/bin/stylint)'
 
     projectConfigFile:
       type: 'string'
@@ -15,7 +15,7 @@ module.exports =
 
     runWithStrictMode:
       default: false
-      title: 'Always run Stylint in \'strict mode\' (config no needed)'
+      title: 'Always run Stylint in \'strict mode\' (Config not necessary)'
       type: 'boolean'
 
     onlyRunWhenConfig:
@@ -51,7 +51,7 @@ module.exports =
         fileText = textEditor.getText()
 
         if !fileText
-          return []
+          return Promise.resolve([])
 
         projectConfigPath = helpers.find(filePath, @projectConfigFile)
 
@@ -59,7 +59,7 @@ module.exports =
 
         if(@onlyRunWhenConfig && !projectConfigPath)
           atom.notifications.addError 'Stylint config no found'
-          return []
+          return Promise.resolve([])
 
         if(@onlyRunWhenConfig || !@runWithStrictMode && projectConfigPath)
           parameters.push('-c', projectConfigPath)
