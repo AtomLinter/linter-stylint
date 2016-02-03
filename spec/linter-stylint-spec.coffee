@@ -1,3 +1,4 @@
+path = require('path')
 
 describe 'The stylint provider for Linter', ->
   lint = require('../lib/init').provideLinter().lint
@@ -17,13 +18,13 @@ describe 'The stylint provider for Linter', ->
 
   it 'finds nothing wrong with valid file', ->
     waitsForPromise ->
-      atom.workspace.open(__dirname + '/fixtures/good.styl').then (editor) ->
+      atom.workspace.open(path.join(__dirname, 'fixtures', 'good.styl')).then (editor) ->
         lint(editor).then (messages) ->
           expect(messages.length).toEqual 0
 
   it 'finds something wrong with invalid file', ->
     waitsForPromise ->
-      atom.workspace.open(__dirname + '/fixtures/bad.styl').then (editor) ->
+      atom.workspace.open(path.join(__dirname, 'fixtures', 'bad.styl')).then (editor) ->
         lint(editor).then (messages) ->
           expect(messages.length).toEqual 2
           expect(messages[0].type).toBeDefined()
