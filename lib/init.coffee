@@ -42,7 +42,7 @@ module.exports =
   provideLinter: ->
     helpers = require('atom-linter')
     provider =
-      grammarScopes: ['source.stylus', 'source.styl', 'source.css.styl']
+      grammarScopes: ['source.stylus', 'source.styl', 'source.css.styl', 'source.css.stylus']
       scope: 'file'
       lintOnFly: true
 
