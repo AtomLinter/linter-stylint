@@ -30,7 +30,7 @@ describe 'The stylint provider for Linter', ->
           expect(messages[0].type).toBeDefined()
           expect(messages[0].type).toEqual 'Warning'
           expect(messages[0].text).toBeDefined()
-          expect(messages[0].text).toEqual 'unecessary bracket'
+          expect(messages[0].text).toEqual 'unnecessary bracket'
           expect(messages[0].filePath).toBeDefined()
           expect(messages[0].filePath).toMatch(/.+bad\.styl$/)
           expect(messages[0].range).toBeDefined()
