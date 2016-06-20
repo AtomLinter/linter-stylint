@@ -42,7 +42,9 @@ module.exports =
   provideLinter: ->
     helpers = require('atom-linter')
     provider =
-      grammarScopes: ['source.stylus', 'source.styl', 'source.css.styl', 'source.css.stylus']
+      grammarScopes: [
+        'source.stylus', 'source.styl', 'source.css.styl', 'source.css.stylus'
+      ]
       scope: 'file'
       lintOnFly: true
 
@@ -55,16 +57,29 @@ module.exports =
 
         projectConfigPath = helpers.find(filePath, @projectConfigFile)
 
+        # Attempt to use Atom's project folder for the CWD
+        if !projectConfigPath
+          projectDir = atom.project.relativizePath(filePath)[0]
+
+        # Fall back to the file directory if Atom wasn't opened as a project
+        if !projectDir
+          projectDir = path.dirname(filePath)
+
         parameters = [filePath]
 
         if(@onlyRunWhenConfig && !projectConfigPath)
-          atom.notifications.addError 'Stylint config no found'
+          atom.notifications.addWarning 'Stylint config not found'
           return Promise.resolve([])
 
         if(@onlyRunWhenConfig || !@runWithStrictMode && projectConfigPath)
           parameters.push('-c', projectConfigPath)
 
-        return helpers.execNode(@executablePath, parameters, stdin: fileText).then (result) ->
+        options = {
+          stdin: fileText
+          cwd: projectDir
+        }
+
+        return helpers.execNode(@executablePath, parameters, options).then (result) ->
           regex = /(Warning|Error):\s(.*)\nFile:\s(.*)\nLine:\s(\d*)/g
           messages = []
 
