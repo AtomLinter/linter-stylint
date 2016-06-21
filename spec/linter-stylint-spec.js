@@ -34,11 +34,11 @@ describe('The stylint provider for Linter', () => {
       atom.workspace.open(badPath).then(editor =>
         lint(editor).then(messages => {
           expect(messages.length).toEqual(2);
-          expect(messages[0].type).toBe('Warning');
-          expect(messages[0].text).toBe('unnecessary bracket');
+          expect(messages[0].type).toBe('warning');
+          expect(messages[0].text).toBe('unnecessary bracket (brackets)');
           expect(messages[0].html).not.toBeDefined();
           expect(messages[0].filePath).toBe(badPath);
-          expect(messages[0].range).toEqual([[1, 0], [1, 7]]);
+          expect(messages[0].range).toEqual([[1, 5], [1, 7]]);
         })
       )
     )
