@@ -1,3 +1,7 @@
 {
-    "brackets": "never"
+    "brackets": "never",
+    "colons": {
+      "expect": "never",
+      "error": true
+    }
 }
