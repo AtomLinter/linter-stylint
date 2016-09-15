@@ -1,24 +1,38 @@
-sudo: false
+### Project specific config ###
+language: generic
 
-git:
-  depth: 10
+matrix:
+  include:
+    - os: linux
+      env: ATOM_CHANNEL=stable
 
-branches:
-  only:
-    - master
+    - os: linux
+      env: ATOM_CHANNEL=beta
 
-os:
-  - linux
-  - osx
+    - os: osx
+      env: ATOM_CHANNEL=stable
 
+### Generic setup follows ###
 script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh'
-
-env:
-  matrix:
-    - ATOM_CHANNEL=stable
-    - ATOM_CHANNEL=beta
 
 notifications:
   email:
     on_success: never
     on_failure: change
+
+branches:
+  only:
+    - master
+
+git:
+  depth: 10
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - build-essential
+    - git
+    - libgnome-keyring-dev
+    - fakeroot
