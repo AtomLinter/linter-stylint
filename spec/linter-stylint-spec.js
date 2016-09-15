@@ -33,7 +33,7 @@ describe('The stylint provider for Linter', () => {
   it('finds something wrong with invalid file', () =>
     waitsForPromise(() =>
       atom.workspace.open(badPath).then(editor =>
-        lint(editor).then(messages => {
+        lint(editor).then((messages) => {
           expect(messages.length).toEqual(2);
           expect(messages[0].type).toBe('warning');
           expect(messages[0].text).toBe('unnecessary bracket (brackets)');
@@ -48,7 +48,7 @@ describe('The stylint provider for Linter', () => {
   it('handles error-level severity', () =>
     waitsForPromise(() =>
       atom.workspace.open(errorPath).then(editor =>
-        lint(editor).then(messages => {
+        lint(editor).then((messages) => {
           expect(messages.length).toEqual(1);
           expect(messages[0].type).toBe('error');
           expect(messages[0].text).toBe('unnecessary colon found (colons)');
