@@ -1,0 +1,6 @@
+{
+  "colons": {
+    "expect": "never",
+    "error": true
+  }
+}
