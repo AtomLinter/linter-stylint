@@ -29,6 +29,15 @@ const validateMulti = (messages, filePath) => {
   expect(messages[2].range).toEqual([[2, 0], [2, 1]]);
 };
 
+const validateError = (messages, filePath) => {
+  expect(messages.length).toEqual(1);
+  expect(messages[0].type).toBe('Error');
+  expect(messages[0].text).toBe('unnecessary colon found (colons)');
+  expect(messages[0].html).not.toBeDefined();
+  expect(messages[0].filePath).toBe(filePath);
+  expect(messages[0].range).toEqual([[1, 6], [1, 7]]);
+};
+
 describe('The stylint provider for Linter', () => {
   const { lint } = require('../lib/init.js').provideLinter();
 
@@ -74,14 +83,7 @@ describe('The stylint provider for Linter', () => {
   it('handles error-level severity', () =>
     waitsForPromise(() =>
       atom.workspace.open(errorPath).then(editor =>
-        lint(editor).then((messages) => {
-          expect(messages.length).toEqual(1);
-          expect(messages[0].type).toBe('error');
-          expect(messages[0].text).toBe('unnecessary colon found (colons)');
-          expect(messages[0].html).not.toBeDefined();
-          expect(messages[0].filePath).toBe(errorPath);
-          expect(messages[0].range).toEqual([[1, 6], [1, 7]]);
-        })
+        lint(editor).then(messages => validateError(messages, errorPath))
       )
     )
   );
