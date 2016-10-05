@@ -1,0 +1,7 @@
+{
+  "reporter": "stylint-stylish",
+  "colons": {
+    "expect": "never",
+    "error": true
+  }
+}

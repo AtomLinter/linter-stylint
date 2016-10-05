@@ -6,6 +6,7 @@ const multiPath = path.join(__dirname, 'fixtures', 'multi', 'multi.styl');
 const noConfigMultiPath = path.join(__dirname, 'fixtures', 'no-config-multi', 'multi.styl');
 const goodPath = path.join(__dirname, 'fixtures', 'good', 'good.styl');
 const errorPath = path.join(__dirname, 'fixtures', 'error', 'error.styl');
+const reporterPath = path.join(__dirname, 'fixtures', 'custom-reporter', 'reporter.styl');
 
 const validateMulti = (messages, filePath) => {
   expect(messages.length).toBe(3);
@@ -79,6 +80,14 @@ describe('The stylint provider for Linter', () => {
       )
     );
   });
+
+  it('works when custom reporters are specified in the configuration', () =>
+    waitsForPromise(() =>
+      atom.workspace.open(reporterPath).then(editor =>
+        lint(editor).then(messages => validateError(messages, reporterPath))
+      )
+    )
+  );
 
   it('handles error-level severity', () =>
     waitsForPromise(() =>
