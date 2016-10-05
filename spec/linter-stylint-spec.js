@@ -11,19 +11,19 @@ const reporterPath = path.join(__dirname, 'fixtures', 'custom-reporter', 'report
 const validateMulti = (messages, filePath) => {
   expect(messages.length).toBe(3);
 
-  expect(messages[0].type).toBe('warning');
+  expect(messages[0].type).toBe('Warning');
   expect(messages[0].text).toBe('unnecessary bracket (brackets)');
   expect(messages[0].html).not.toBeDefined();
   expect(messages[0].filePath).toBe(filePath);
   expect(messages[0].range).toEqual([[0, 5], [0, 7]]);
 
-  expect(messages[1].type).toBe('warning');
+  expect(messages[1].type).toBe('Warning');
   expect(messages[1].text).toBe('missing colon between property and value (colons)');
   expect(messages[1].html).not.toBeDefined();
   expect(messages[1].filePath).toBe(filePath);
   expect(messages[1].range).toEqual([[1, 4], [1, 7]]);
 
-  expect(messages[2].type).toBe('warning');
+  expect(messages[2].type).toBe('Warning');
   expect(messages[2].text).toBe('unnecessary bracket (brackets)');
   expect(messages[2].html).not.toBeDefined();
   expect(messages[2].filePath).toBe(filePath);
