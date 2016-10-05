@@ -6,27 +6,37 @@ const multiPath = path.join(__dirname, 'fixtures', 'multi', 'multi.styl');
 const noConfigMultiPath = path.join(__dirname, 'fixtures', 'no-config-multi', 'multi.styl');
 const goodPath = path.join(__dirname, 'fixtures', 'good', 'good.styl');
 const errorPath = path.join(__dirname, 'fixtures', 'error', 'error.styl');
+const reporterPath = path.join(__dirname, 'fixtures', 'custom-reporter', 'reporter.styl');
 
 const validateMulti = (messages, filePath) => {
   expect(messages.length).toBe(3);
 
-  expect(messages[0].type).toBe('warning');
+  expect(messages[0].type).toBe('Warning');
   expect(messages[0].text).toBe('unnecessary bracket (brackets)');
   expect(messages[0].html).not.toBeDefined();
   expect(messages[0].filePath).toBe(filePath);
   expect(messages[0].range).toEqual([[0, 5], [0, 7]]);
 
-  expect(messages[1].type).toBe('warning');
+  expect(messages[1].type).toBe('Warning');
   expect(messages[1].text).toBe('missing colon between property and value (colons)');
   expect(messages[1].html).not.toBeDefined();
   expect(messages[1].filePath).toBe(filePath);
   expect(messages[1].range).toEqual([[1, 4], [1, 7]]);
 
-  expect(messages[2].type).toBe('warning');
+  expect(messages[2].type).toBe('Warning');
   expect(messages[2].text).toBe('unnecessary bracket (brackets)');
   expect(messages[2].html).not.toBeDefined();
   expect(messages[2].filePath).toBe(filePath);
   expect(messages[2].range).toEqual([[2, 0], [2, 1]]);
+};
+
+const validateError = (messages, filePath) => {
+  expect(messages.length).toEqual(1);
+  expect(messages[0].type).toBe('Error');
+  expect(messages[0].text).toBe('unnecessary colon found (colons)');
+  expect(messages[0].html).not.toBeDefined();
+  expect(messages[0].filePath).toBe(filePath);
+  expect(messages[0].range).toEqual([[1, 6], [1, 7]]);
 };
 
 describe('The stylint provider for Linter', () => {
@@ -71,17 +81,18 @@ describe('The stylint provider for Linter', () => {
     );
   });
 
+  it('works when custom reporters are specified in the configuration', () =>
+    waitsForPromise(() =>
+      atom.workspace.open(reporterPath).then(editor =>
+        lint(editor).then(messages => validateError(messages, reporterPath))
+      )
+    )
+  );
+
   it('handles error-level severity', () =>
     waitsForPromise(() =>
       atom.workspace.open(errorPath).then(editor =>
-        lint(editor).then((messages) => {
-          expect(messages.length).toEqual(1);
-          expect(messages[0].type).toBe('error');
-          expect(messages[0].text).toBe('unnecessary colon found (colons)');
-          expect(messages[0].html).not.toBeDefined();
-          expect(messages[0].filePath).toBe(errorPath);
-          expect(messages[0].range).toEqual([[1, 6], [1, 7]]);
-        })
+        lint(editor).then(messages => validateError(messages, errorPath))
       )
     )
   );
