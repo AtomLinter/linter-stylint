@@ -47,53 +47,53 @@ describe('The stylint provider for Linter', () => {
     waitsForPromise(() => atom.packages.activatePackage('linter-stylint'));
   });
 
-  it('should be in the packages list', () =>
+  it('should be in the packages list', () => (
     expect(atom.packages.isPackageLoaded('linter-stylint')).toBe(true)
-  );
+  ));
 
-  it('should be an active package', () =>
+  it('should be an active package', () => (
     expect(atom.packages.isPackageActive('linter-stylint')).toBe(true)
-  );
+  ));
 
-  it('finds nothing wrong with valid file', () =>
-    waitsForPromise(() =>
-      atom.workspace.open(goodPath).then(editor =>
+  it('finds nothing wrong with valid file', () => (
+    waitsForPromise(() => (
+      atom.workspace.open(goodPath).then(editor => (
         lint(editor).then(messages => expect(messages.length).toBe(0))
-      )
-    )
-  );
+      ))
+    ))
+  ));
 
   describe('checks a file with multiple issues', () => {
-    it('works with a config', () =>
-      waitsForPromise(() =>
-        atom.workspace.open(multiPath).then(editor =>
+    it('works with a config', () => (
+      waitsForPromise(() => (
+        atom.workspace.open(multiPath).then(editor => (
           lint(editor).then(messages => validateMulti(messages, multiPath))
-        )
-      )
-    );
+        ))
+      ))
+    ));
 
-    it('works without a config', () =>
-      waitsForPromise(() =>
-        atom.workspace.open(noConfigMultiPath).then(editor =>
+    it('works without a config', () => (
+      waitsForPromise(() => (
+        atom.workspace.open(noConfigMultiPath).then(editor => (
           lint(editor).then(messages => validateMulti(messages, noConfigMultiPath))
-        )
-      )
-    );
+        ))
+      ))
+    ));
   });
 
-  it('works when custom reporters are specified in the configuration', () =>
-    waitsForPromise(() =>
-      atom.workspace.open(reporterPath).then(editor =>
+  it('works when custom reporters are specified in the configuration', () => (
+    waitsForPromise(() => (
+      atom.workspace.open(reporterPath).then(editor => (
         lint(editor).then(messages => validateError(messages, reporterPath))
-      )
-    )
-  );
+      ))
+    ))
+  ));
 
-  it('handles error-level severity', () =>
-    waitsForPromise(() =>
-      atom.workspace.open(errorPath).then(editor =>
+  it('handles error-level severity', () => (
+    waitsForPromise(() => (
+      atom.workspace.open(errorPath).then(editor => (
         lint(editor).then(messages => validateError(messages, errorPath))
-      )
-    )
-  );
+      ))
+    ))
+  ));
 });
