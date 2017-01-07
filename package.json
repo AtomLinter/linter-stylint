@@ -1,7 +1,7 @@
 {
   "name": "linter-stylint",
   "main": "./lib/init.js",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "Linter plugin for Stylus, using `stylint`.",
   "repository": {
     "type": "git",
