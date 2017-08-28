@@ -9,7 +9,7 @@ matrix:
     - os: linux
       env: ATOM_CHANNEL=beta
 
-### Generic setup follows ###
+#### Generic setup follows ###
 script:
   - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
   - chmod u+x build-package.sh
@@ -30,10 +30,12 @@ git:
 
 sudo: false
 
+dist: trusty
+
 addons:
   apt:
     packages:
     - build-essential
-    - git
-    - libgnome-keyring-dev
     - fakeroot
+    - git
+    - libsecret-1-dev
