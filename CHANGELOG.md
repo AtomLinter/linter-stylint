@@ -1,5 +1,17 @@
 # Change Log
 
+## [v2.2.8](https://github.com/AtomLinter/linter-stylint/tree/v2.2.8) (2017-08-28)
+[Full Changelog](https://github.com/AtomLinter/linter-stylint/compare/v2.2.7...v2.2.8)
+
+**Implemented enhancements:**
+
+- Update eslint to version 4.5.0 🚀 [\#83](https://github.com/AtomLinter/linter-stylint/pull/83) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update atom-linter to version 10.0.0 🚀 [\#81](https://github.com/AtomLinter/linter-stylint/pull/81) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
+**Fixed bugs:**
+
+- Update Travis CI configuration [\#88](https://github.com/AtomLinter/linter-stylint/pull/88) ([Arcanemagus](https://github.com/Arcanemagus))
+
 ## [v2.2.7](https://github.com/AtomLinter/linter-stylint/tree/v2.2.7) (2017-03-19)
 [Full Changelog](https://github.com/AtomLinter/linter-stylint/compare/v2.2.6...v2.2.7)
 
