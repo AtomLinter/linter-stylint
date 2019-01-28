@@ -11,32 +11,32 @@ const reporterPath = path.join(__dirname, 'fixtures', 'custom-reporter', 'report
 const validateMulti = (messages, filePath) => {
   expect(messages.length).toBe(3);
 
-  expect(messages[0].type).toBe('Warning');
-  expect(messages[0].text).toBe('unnecessary bracket (brackets)');
-  expect(messages[0].html).not.toBeDefined();
-  expect(messages[0].filePath).toBe(filePath);
-  expect(messages[0].range).toEqual([[0, 5], [0, 7]]);
+  expect(messages[0].severity).toBe('warning');
+  expect(messages[0].excerpt).toBe('unnecessary bracket (brackets)');
+  expect(messages[0].url).not.toBeDefined();
+  expect(messages[0].location.file).toBe(filePath);
+  expect(messages[0].location.position).toEqual([[0, 5], [0, 7]]);
 
-  expect(messages[1].type).toBe('Warning');
-  expect(messages[1].text).toBe('missing colon between property and value (colons)');
-  expect(messages[1].html).not.toBeDefined();
-  expect(messages[1].filePath).toBe(filePath);
-  expect(messages[1].range).toEqual([[1, 4], [1, 7]]);
+  expect(messages[1].severity).toBe('warning');
+  expect(messages[1].excerpt).toBe('missing colon between property and value (colons)');
+  expect(messages[1].url).not.toBeDefined();
+  expect(messages[1].location.file).toBe(filePath);
+  expect(messages[1].location.position).toEqual([[1, 4], [1, 7]]);
 
-  expect(messages[2].type).toBe('Warning');
-  expect(messages[2].text).toBe('unnecessary bracket (brackets)');
-  expect(messages[2].html).not.toBeDefined();
-  expect(messages[2].filePath).toBe(filePath);
-  expect(messages[2].range).toEqual([[2, 0], [2, 1]]);
+  expect(messages[2].severity).toBe('warning');
+  expect(messages[2].excerpt).toBe('unnecessary bracket (brackets)');
+  expect(messages[2].url).not.toBeDefined();
+  expect(messages[2].location.file).toBe(filePath);
+  expect(messages[2].location.position).toEqual([[2, 0], [2, 1]]);
 };
 
 const validateError = (messages, filePath) => {
   expect(messages.length).toEqual(1);
-  expect(messages[0].type).toBe('Error');
-  expect(messages[0].text).toBe('unnecessary colon found (colons)');
-  expect(messages[0].html).not.toBeDefined();
-  expect(messages[0].filePath).toBe(filePath);
-  expect(messages[0].range).toEqual([[1, 6], [1, 7]]);
+  expect(messages[0].severity).toBe('error');
+  expect(messages[0].excerpt).toBe('unnecessary colon found (colons)');
+  expect(messages[0].url).not.toBeDefined();
+  expect(messages[0].location.file).toBe(filePath);
+  expect(messages[0].location.position).toEqual([[1, 6], [1, 7]]);
 };
 
 describe('The stylint provider for Linter', () => {
