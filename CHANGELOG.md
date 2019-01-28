@@ -1,5 +1,18 @@
 # Change Log
 
+## [v2.3.0](https://github.com/AtomLinter/linter-stylint/tree/v2.3.0) (2019-01-28)
+[Full Changelog](https://github.com/AtomLinter/linter-stylint/compare/v2.2.8...v2.3.0)
+
+**Implemented enhancements:**
+
+- V2 linter API support [\#99](https://github.com/AtomLinter/linter-stylint/pull/99) ([vzamanillo](https://github.com/vzamanillo))
+- Update atom-package-deps to version 5.0.0 🚀 [\#97](https://github.com/AtomLinter/linter-stylint/pull/97) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update eslint-config-airbnb-base to version 12.0.0 🚀 [\#89](https://github.com/AtomLinter/linter-stylint/pull/89) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
+**Fixed bugs:**
+
+- Support v2 Linter API [\#98](https://github.com/AtomLinter/linter-stylint/issues/98)
+
 ## [v2.2.8](https://github.com/AtomLinter/linter-stylint/tree/v2.2.8) (2017-08-28)
 [Full Changelog](https://github.com/AtomLinter/linter-stylint/compare/v2.2.7...v2.2.8)
 
