@@ -43,6 +43,11 @@
     "eslint-plugin-import": "^2.7.0",
     "stylint-stylish": "^1.4.0"
   },
+  "renovate": {
+    "extends": [
+      "config:base"
+    ]
+  },
   "eslintConfig": {
     "rules": {
       "global-require": "off",
