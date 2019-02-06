@@ -41,7 +41,7 @@
     "eslint": "5.13.0",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.16.0",
-    "stylint-stylish": "1.4.1"
+    "stylint-stylish": "2.0.0"
   },
   "renovate": {
     "extends": [
